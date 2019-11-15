@@ -1,2 +1,2 @@
 for i in range(0, 11):
-  print(str(i))
+  print("- " + str(i))
