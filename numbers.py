@@ -1,2 +1,2 @@
-for i in range(0, 11):
-  print("- " + str(i))
+def add(a, b):
+    return int(a) + int(b)
