@@ -1,19 +1,23 @@
-name: CI
+workflow "Build and Test" {
+  on = "push"
+  resolves = [
+    "Test",
+  ]
+}
 
-on: [push]
+action "Build" {
+  uses = "jefftriplett/python-actions@master"
+  args = "pip install -r requirements.txt"
+}
 
-jobs:
-  build:
+action "Lint" {
+  uses = "jefftriplett/python-actions@master"
+  args = "black --check"
+  needs = ["Build"]
+}
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-    - name: Python style check
-      uses: bulv1ne/python-style-check@v0.1
+action "Test" {
+  uses = "jefftriplett/python-actions@master"
+  args = "pytest"
+  needs = ["Lint"]
+}
